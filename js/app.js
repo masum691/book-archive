@@ -1,10 +1,12 @@
 
+document.getElementById('no-found-message').style.display = 'none';
 const searchButton = () => {
     const searchInput = document.getElementById('search-input');
     const searchField = searchInput.value;
     // console.log(searchField);
     searchInput.value = '';
     const url = `http://openlibrary.org/search.json?q=${searchField}`
+    document.getElementById('no-found-message').style.display = 'none';
     if(searchField == ''){
         alert('Invalid')
     }
@@ -12,13 +14,21 @@ const searchButton = () => {
     fetch(url)
     .then(res => res.json())
     .then(data => displayBookResults(data.docs))
+    .catch(error => displayError(error))
     }
 }
 
+const displayError = () => {
+  document.getElementById('no-found-message').style.display = 'none';
+}
+document.getElementById('no-found-message').style.display = 'none';
 const displayBookResults = books => {
     // console.log(books)
     const bookDetails = document.getElementById('book-details');
     bookDetails.textContent = '';
+    if(books.length == 0){
+      document.getElementById('no-found-message').style.display = 'block';
+    }
     books.forEach(book => {
         // console.log(book.author_name[0])
         console.log(book)
